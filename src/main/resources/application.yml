@@ -1,0 +1,19 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: "${ACP_POSTGRES:jdbc:postgresql://localhost:5433/postgres}"
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+  session:
+    store-type: none
+
+acp:
+  sid: "${ACP_SID:s2891348}"
+  s3-endpoint: "${ACP_S3:http://s3.localhost.localstack.cloud:4566}"
+  dynamodb-endpoint: "${ACP_DYNAMODB:http://dynamodb.localhost.localstack.cloud:4566}"
