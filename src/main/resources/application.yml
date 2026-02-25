@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: "${ACP_POSTGRES:jdbc:postgresql://localhost:5433/acp}"
+    url: "${ACP_POSTGRES:jdbc:postgresql://localhost:5432/acp}"
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
