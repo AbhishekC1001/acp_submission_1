@@ -71,7 +71,7 @@ public class DroneProcessingService {
             try {
                 double val = obj.get(field).getAsDouble();
                 return Double.isNaN(val) ? 0.0 : val;
-            } catch (Exception var5) {
+            } catch (Exception e) {
                 return 0.0;
             }
         } else {

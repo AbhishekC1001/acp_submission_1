@@ -30,10 +30,10 @@ public class S3Service {
         ListObjectsV2Response response;
         do {
             response = this.s3Client.listObjectsV2((ListObjectsV2Request)requestBuilder.build());
-            Iterator var6 = response.contents().iterator();
+            Iterator it = response.contents().iterator();
 
-            while(var6.hasNext()) {
-                S3Object obj = (S3Object)var6.next();
+            while(it.hasNext()) {
+                S3Object obj = (S3Object)it.next();
                 contents.add(this.getObjectContent(bucket, obj.key()));
             }
 

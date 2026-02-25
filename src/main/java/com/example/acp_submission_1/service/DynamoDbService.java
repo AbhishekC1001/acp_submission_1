@@ -43,10 +43,10 @@ public class DynamoDbService {
         ScanResponse response;
         do {
             response = this.dynamoDbClient.scan((ScanRequest)requestBuilder.build());
-            Iterator var6 = response.items().iterator();
+            Iterator it = response.items().iterator();
 
-            while(var6.hasNext()) {
-                Map<String, AttributeValue> item = (Map)var6.next();
+            while(it.hasNext()) {
+                Map<String, AttributeValue> item = (Map)it.next();
                 items.add(this.convertItem(item));
             }
 
@@ -68,10 +68,10 @@ public class DynamoDbService {
         this.ensureTableExists(table);
         Map<String, AttributeValue> item = new HashMap();
         item.put("key", (AttributeValue)AttributeValue.builder().s(keyValue).build());
-        Iterator var6 = jsonData.entrySet().iterator();
+        Iterator it = jsonData.entrySet().iterator();
 
-        while(var6.hasNext()) {
-            Map.Entry<String, JsonElement> entry = (Map.Entry)var6.next();
+        while(it.hasNext()) {
+            Map.Entry<String, JsonElement> entry = (Map.Entry)it.next();
             item.put((String)entry.getKey(), this.jsonToAttributeValue((JsonElement)entry.getValue()));
         }
 
@@ -82,10 +82,10 @@ public class DynamoDbService {
         this.ensureTableExists(table);
         Map<String, AttributeValue> item = new HashMap();
         item.put("key", (AttributeValue)AttributeValue.builder().s(keyValue).build());
-        Iterator var6 = data.entrySet().iterator();
+        Iterator it = data.entrySet().iterator();
 
-        while(var6.hasNext()) {
-            Map.Entry<String, Object> entry = (Map.Entry)var6.next();
+        while(it.hasNext()) {
+            Map.Entry<String, Object> entry = (Map.Entry)it.next();
             item.put((String)entry.getKey(), this.objectToAttributeValue(entry.getValue()));
         }
 
@@ -113,10 +113,10 @@ public class DynamoDbService {
 
     private Map<String, Object> convertItem(Map<String, AttributeValue> item) {
         Map<String, Object> result = new LinkedHashMap();
-        Iterator var4 = item.entrySet().iterator();
+        Iterator it = item.entrySet().iterator();
 
-        while(var4.hasNext()) {
-            Map.Entry<String, AttributeValue> entry = (Map.Entry)var4.next();
+        while(it.hasNext()) {
+            Map.Entry<String, AttributeValue> entry = (Map.Entry)it.next();
             result.put((String)entry.getKey(), this.attributeValueToObject((AttributeValue)entry.getValue()));
         }
 
@@ -150,20 +150,20 @@ public class DynamoDbService {
                     return av.toString();
                 case M:
                     Map<String, Object> map = new LinkedHashMap();
-                    Iterator var6 = av.m().entrySet().iterator();
+                    Iterator it = av.m().entrySet().iterator();
 
-                    while(var6.hasNext()) {
-                        Map.Entry<String, AttributeValue> e = (Map.Entry)var6.next();
+                    while(it.hasNext()) {
+                        Map.Entry<String, AttributeValue> e = (Map.Entry)it.next();
                         map.put((String)e.getKey(), this.attributeValueToObject((AttributeValue)e.getValue()));
                     }
 
                     return map;
                 case L:
                     List<Object> list = new ArrayList();
-                    Iterator var5 = av.l().iterator();
+                    Iterator it1 = av.l().iterator();
 
-                    while(var5.hasNext()) {
-                        AttributeValue v = (AttributeValue)var5.next();
+                    while(it1.hasNext()) {
+                        AttributeValue v = (AttributeValue)it1.next();
                         list.add(this.attributeValueToObject(v));
                     }
 
@@ -186,13 +186,13 @@ public class DynamoDbService {
                     return prim.isNumber() ? (AttributeValue)AttributeValue.builder().n(prim.getAsString()).build() : (AttributeValue)AttributeValue.builder().s(prim.getAsString()).build();
                 }
             } else {
-                Iterator var4;
+                Iterator it;
                 if (element.isJsonArray()) {
                     List<AttributeValue> list = new ArrayList();
-                    var4 = element.getAsJsonArray().iterator();
+                    it = element.getAsJsonArray().iterator();
 
-                    while(var4.hasNext()) {
-                        JsonElement e = (JsonElement)var4.next();
+                    while(it.hasNext()) {
+                        JsonElement e = (JsonElement)it.next();
                         list.add(this.jsonToAttributeValue(e));
                     }
 
@@ -201,10 +201,10 @@ public class DynamoDbService {
                     return (AttributeValue)AttributeValue.builder().s(element.toString()).build();
                 } else {
                     Map<String, AttributeValue> map = new LinkedHashMap();
-                    var4 = element.getAsJsonObject().entrySet().iterator();
+                    it = element.getAsJsonObject().entrySet().iterator();
 
-                    while(var4.hasNext()) {
-                        Map.Entry<String, JsonElement> e = (Map.Entry)var4.next();
+                    while(it.hasNext()) {
+                        Map.Entry<String, JsonElement> e = (Map.Entry)it.next();
                         map.put((String)e.getKey(), this.jsonToAttributeValue((JsonElement)e.getValue()));
                     }
 

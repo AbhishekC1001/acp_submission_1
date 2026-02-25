@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: "${ACP_POSTGRES:jdbc:postgresql://localhost:5433/postgres}"
+    url: "${ACP_POSTGRES:jdbc:postgresql://localhost:5433/acp}"
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -15,5 +15,5 @@ spring:
 
 acp:
   sid: "${ACP_SID:s2891348}"
-  s3-endpoint: "${ACP_S3:http://s3.localhost.localstack.cloud:4566}"
-  dynamodb-endpoint: "${ACP_DYNAMODB:http://dynamodb.localhost.localstack.cloud:4566}"
+  s3-endpoint: "${ACP_S3:http://localhost:4566}"
+  dynamodb-endpoint: "${ACP_DYNAMODB:http://localhost:4566}"

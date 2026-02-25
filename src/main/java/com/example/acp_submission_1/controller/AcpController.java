@@ -38,6 +38,9 @@ public class AcpController {
     @GetMapping({"/all/s3/{bucket}"})
     public ResponseEntity<String> getAllS3Objects(@PathVariable String bucket) {
         try {
+            if(bucket ==null || bucket.isEmpty()){
+                bucket=this.sid;
+            }
             List<String> contents = this.s3Service.getAllObjectContents(bucket);
             JsonArray array = new JsonArray();
             Iterator it = contents.iterator();
@@ -60,6 +63,9 @@ public class AcpController {
 
     @GetMapping({"/single/s3/{bucket}/{key}"})
     public ResponseEntity<String> getSingleS3Object(@PathVariable String bucket, @PathVariable String key) {
+        if(bucket ==null || bucket.isEmpty()){
+            bucket=this.sid;
+        }
         try {
             String content = this.s3Service.getObjectContent(bucket, key);
             return ResponseEntity.ok(content);
@@ -71,6 +77,9 @@ public class AcpController {
     @GetMapping({"/all/dynamo/{table}"})
     public ResponseEntity<String> getAllDynamoItems(@PathVariable String table) {
         try {
+            if(table ==null || table.isEmpty()){
+                table=this.sid;
+            }
             List<Map<String, Object>> items = this.dynamoDbService.getAllItems(table);
             return ResponseEntity.ok(this.gson.toJson(items));
         } catch (Exception e) {
@@ -81,6 +90,9 @@ public class AcpController {
     @GetMapping({"/single/dynamo/{table}/{key}"})
     public ResponseEntity<String> getSingleDynamoItem(@PathVariable String table, @PathVariable String key) {
         try {
+            if(table ==null || table.isEmpty()){
+                table=this.sid;
+            }
             Map<String, Object> item = this.dynamoDbService.getItemByKey(table, key);
             return item == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(this.gson.toJson(item));
         } catch (Exception e) {
@@ -91,6 +103,9 @@ public class AcpController {
     @GetMapping({"/all/postgres/{table}"})
     public ResponseEntity<String> getAllPostgresRows(@PathVariable String table) {
         try {
+            if(table ==null || table.isEmpty()){
+                table=this.sid;
+            }
             List<Map<String, Object>> rows = this.postgresService.getAllRows(table);
             return ResponseEntity.ok(this.gson.toJson(rows));
         } catch (Exception e) {
@@ -150,6 +165,10 @@ public class AcpController {
     @PostMapping({"/process/postgres/{table}"})
     public ResponseEntity<Void> processPostgres(@PathVariable String table, @RequestBody Map<String, String> body) {
         try {
+            if(table ==null || table.isEmpty()){
+                table=this.sid;
+            }
+            this.postgresService.createTableIfNotExists(table);
             String urlPath = (String)body.get("urlPath");
             List<JsonObject> processed = this.droneProcessingService.fetchAndProcessDrones(urlPath);
             Iterator it = processed.iterator();
@@ -168,6 +187,9 @@ public class AcpController {
     @PostMapping({"/copy-content/dynamo/{table}"})
     public ResponseEntity<Void> copyContentToDynamo(@PathVariable String table) {
         try {
+            if(table ==null || table.isEmpty()){
+                table=this.sid;
+            }
             List<Map<String, Object>> rows = this.postgresService.getAllRows(table);
             Iterator it = rows.iterator();
 
